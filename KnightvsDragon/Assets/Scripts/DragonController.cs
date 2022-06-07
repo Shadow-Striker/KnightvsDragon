@@ -148,5 +148,6 @@ public class DragonController : MonoBehaviour, IDamagable
     public void TakeDamage(int _damage)
     {
         currentHealth -= damage;
+        uiManager.ChangeDragonHealth(_damage, currentHealth);
     }
 }

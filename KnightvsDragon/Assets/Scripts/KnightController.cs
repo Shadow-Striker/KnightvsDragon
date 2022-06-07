@@ -5,6 +5,8 @@ using UnityEngine;
 public class KnightController : MonoBehaviour, IDamagable
 {
     private UIManager uiManager;
+    private Sword swordScript;
+    private GameManager gameManager;
     [SerializeField] private int coinsCollected;
     [SerializeField] private int currentMoveSpeed;
     [SerializeField] private int originalMoveSpeed;
@@ -43,12 +45,24 @@ public class KnightController : MonoBehaviour, IDamagable
         }
     }
 
+    public int CoinsCollected
+    {
+        get
+        {
+            return coinsCollected;
+        }
+    }
+
+
+
     // Start is called before the first frame update
     void Start()
     {
         StartingHealth = 100;
         playerSprite = GetComponent<SpriteRenderer>().sprite;
+        swordScript = FindObjectOfType<Sword>();
         uiManager = FindObjectOfType<UIManager>();
+        gameManager = FindObjectOfType<GameManager>();
         currentMoveSpeed = originalMoveSpeed;
         currentHealth = StartingHealth;
         uiManager.ChangeKnightHealth(0, currentHealth);
@@ -116,22 +130,22 @@ public class KnightController : MonoBehaviour, IDamagable
         if (transform.position.x - playerSprite.bounds.extents.x < -screenVector.x)
         {
             transform.position = new Vector3 (-screenVector.x + playerSprite.bounds.extents.x,transform.position.y,transform.position.z);
-            print("Left edge exceeded");
+           // print("Left edge exceeded");
         }
         else if (transform.position.x + playerSprite.bounds.extents.x > screenVector.x)
         {
            transform.position = new Vector3(screenVector.x - playerSprite.bounds.extents.x, transform.position.y, transform.position.z);
-            print("Right edge exceeded");
+            //print("Right edge exceeded");
         }
         else if(transform.position.y + playerSprite.bounds.extents.y > screenVector.y)
         {
             transform.position = new Vector3(transform.position.x, screenVector.y - playerSprite.bounds.extents.y, transform.position.z);
-            print("Top edge exceeded");
+            //print("Top edge exceeded");
         }
         else if (transform.position.y - playerSprite.bounds.extents.y < -screenVector.y)
         {
             transform.position = new Vector3(transform.position.x, -screenVector.y + playerSprite.bounds.extents.y, transform.position.z);
-            print("Bottom edge exceeded");
+            //print("Bottom edge exceeded");
         }
 
     }
@@ -183,17 +197,15 @@ public class KnightController : MonoBehaviour, IDamagable
 
         if (canSwordAttack && Input.GetKeyDown(KeyCode.J))
         {
-           Collider2D[] col = Physics2D.OverlapCircleAll(swordAttackPosition.position, swordAttackRange, dragonLayerMask);
-
-            for (int i = 0; i < col.Length; i++)
+           print("J key pressed");
+            if(swordScript.IsColliding)
             {
-                print("Hello" + col[i].gameObject);
-                //We need to damage the dragon.
-                //How? We need to get the dragon's IDamagable script
-                IDamagable dragonDamagable = col[i].GetComponent<IDamagable>();
+
+                IDamagable dragonDamagable = FindObjectOfType<DragonController>().GetComponent<IDamagable>();
+                print(dragonDamagable);
                 if (dragonDamagable != null)
                 {
-                    print("HWEWE");
+                    print("Damaging dragon");
                     dragonDamagable.TakeDamage(swordDamage);
                 }
             }
@@ -204,11 +216,7 @@ public class KnightController : MonoBehaviour, IDamagable
 
     public void TakeDamage(int _damage)
     {
-        print("Current health: " + currentHealth);
-        print("Damage" + _damage);
         currentHealth -= _damage;
-        print("Current health: " + currentHealth);
-        print("Damage" + _damage);
         uiManager.ChangeKnightHealth(_damage, currentHealth);
     }
 
@@ -227,5 +235,10 @@ public class KnightController : MonoBehaviour, IDamagable
             uiManager.ChangeCoinText(coinsCollected);
             Destroy(collision.gameObject);
         }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(swordAttackPosition.position, swordAttackRange);
     }
 }

@@ -8,10 +8,10 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Text knightHealthText;
     [SerializeField] private Text dragonHealthText;
     [SerializeField] private Text coinText;
+    [SerializeField] private GameObject winScreen;
     // Start is called before the first frame update
     void Start()
     {
-        
     }
 
     // Update is called once per frame
@@ -33,5 +33,10 @@ public class UIManager : MonoBehaviour
     public void ChangeCoinText(int _coins)
     {
         coinText.text = "Coins: " + _coins;
+    }
+
+    public void ToggleWinScreen()
+    {
+        winScreen.SetActive(true);
     }
 }
