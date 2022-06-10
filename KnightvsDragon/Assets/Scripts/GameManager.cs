@@ -89,6 +89,11 @@ public class GameManager : MonoBehaviour
         if(hasWonGame)
         {
             uiManager.ToggleWinScreen();
+
+            if(Input.GetKeyDown(KeyCode.L))
+            {
+                SceneManager.LoadScene(0);
+            }
         }
 
     }
