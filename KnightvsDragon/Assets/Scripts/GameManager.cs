@@ -76,19 +76,23 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(knightController.CoinsCollected >= coinsRequiredToWin)
+        //Knight has won the game
+        if(knightController.CoinsCollected >= coinsRequiredToWin || dragonController.Health <= 0)
         {
             hasWonGame = true;
+            uiManager.KnightWins();
         }
 
+        //Dragon has won the game
         if(knightController.Health <= 0)
         {
             hasWonGame = true;
+            uiManager.DragonWins();
         }
 
         if(hasWonGame)
         {
-            uiManager.ToggleWinScreen();
+
 
             if(Input.GetKeyDown(KeyCode.L))
             {

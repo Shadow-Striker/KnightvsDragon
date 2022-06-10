@@ -23,7 +23,7 @@ public class KnightController : MonoBehaviour, IDamagable
     [SerializeField] private float coolDownTime;
     [SerializeField] private int currentHealth;
     [SerializeField] private AudioSource swordSFXAudioSource;
-    [SerializeField] private AudioClip swordSfx;
+    [SerializeField] private AudioSource coinPickupSource;
 
 
     [SerializeField] private Transform swordAttackPosition;
@@ -234,6 +234,9 @@ public class KnightController : MonoBehaviour, IDamagable
 
         if(collision.CompareTag("Coin"))
         {
+            float randFloat = Random.Range(.98f, 1.03f);
+            coinPickupSource.pitch = randFloat;
+            coinPickupSource.Play();
             coinsCollected++;
             uiManager.ChangeCoinText(coinsCollected);
             Destroy(collision.gameObject);

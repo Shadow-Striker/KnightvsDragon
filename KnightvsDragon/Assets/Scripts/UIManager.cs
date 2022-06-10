@@ -9,6 +9,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Text dragonHealthText;
     [SerializeField] private Text coinText;
     [SerializeField] private GameObject winScreen;
+    [SerializeField] private Text winText;
     // Start is called before the first frame update
     void Start()
     {
@@ -22,12 +23,12 @@ public class UIManager : MonoBehaviour
 
     public void ChangeKnightHealth(int _damage, int _currentHealth)
     {
-        knightHealthText.text = "Health: " + (_currentHealth - _damage).ToString();
+        knightHealthText.text = "Knight Health: " + (_currentHealth - _damage).ToString();
     }
 
     public void ChangeDragonHealth(int _damage, int _currentHealth)
     {
-        dragonHealthText.text = "Health: " + (_currentHealth - _damage).ToString();
+        dragonHealthText.text = "Dragon Health: " + (_currentHealth - _damage).ToString();
     }
 
     public void ChangeCoinText(int _coins)
@@ -35,8 +36,15 @@ public class UIManager : MonoBehaviour
         coinText.text = "Coins: " + _coins;
     }
 
-    public void ToggleWinScreen()
+    public void KnightWins()
     {
         winScreen.SetActive(true);
+        winText.text = "THE KNIGHT WINS!";
+    }
+
+    public void DragonWins()
+    {
+        winScreen.SetActive(true);
+        winText.text = "THE DRAGON WINS!";
     }
 }
