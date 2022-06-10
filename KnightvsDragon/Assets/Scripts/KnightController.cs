@@ -22,6 +22,8 @@ public class KnightController : MonoBehaviour, IDamagable
     [SerializeField] private float totalCoolDownTime;
     [SerializeField] private float coolDownTime;
     [SerializeField] private int currentHealth;
+    [SerializeField] private AudioSource swordSFXAudioSource;
+    [SerializeField] private AudioClip swordSfx;
 
 
     [SerializeField] private Transform swordAttackPosition;
@@ -198,7 +200,8 @@ public class KnightController : MonoBehaviour, IDamagable
         if (canSwordAttack && Input.GetKeyDown(KeyCode.J))
         {
            print("J key pressed");
-            if(swordScript.IsColliding)
+            swordSFXAudioSource.Play();
+            if (swordScript.IsColliding)
             {
 
                 IDamagable dragonDamagable = FindObjectOfType<DragonController>().GetComponent<IDamagable>();

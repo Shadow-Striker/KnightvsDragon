@@ -48,7 +48,7 @@ public class DragonController : MonoBehaviour, IDamagable
     void Update()
     {
         Movement();
-       // ScreenCollision();
+        ScreenCollision();
         if (Input.GetKeyDown(KeyCode.I) && !canStartDashing)
         {
             canStartDashing = true;
@@ -91,26 +91,29 @@ public class DragonController : MonoBehaviour, IDamagable
     {
         //Ensure player can't collide with the 4 sides of the screen.
         //If they go over a side push them back.
-        Vector3 edgesOfCamera = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width * Camera.main.transform.position.x, Screen.height + Camera.main.transform.position.y, 0));
-        if (transform.position.x + playerSprite.bounds.extents.x < edgesOfCamera.x)
-        {
-            print("Left edge exceeded");
-        }
-        else if (transform.position.x + playerSprite.bounds.extents.x < edgesOfCamera.x)
-        {
-            print("Right edge exceeded");
-        }
-        else if (transform.position.y + playerSprite.bounds.extents.y > edgesOfCamera.y)
-        {
-            print("player " + transform.position.y + playerSprite.bounds.extents.y);
-            print("camera" + edgesOfCamera.y);
-            print("Top edge exceeded");
-        }
-        else if (transform.position.y + playerSprite.bounds.extents.y < edgesOfCamera.y)
-        {
-            print("Bottom edge exceeded");
-        }
 
+        Vector3 screenVector = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
+
+        if (transform.position.x - playerSprite.bounds.extents.x < -screenVector.x)
+        {
+            transform.position = new Vector3(-screenVector.x + playerSprite.bounds.extents.x, transform.position.y, transform.position.z);
+            // print("Left edge exceeded");
+        }
+        else if (transform.position.x + playerSprite.bounds.extents.x > screenVector.x)
+        {
+            transform.position = new Vector3(screenVector.x - playerSprite.bounds.extents.x, transform.position.y, transform.position.z);
+            //print("Right edge exceeded");
+        }
+        else if (transform.position.y + playerSprite.bounds.extents.y > screenVector.y)
+        {
+            transform.position = new Vector3(transform.position.x, screenVector.y - playerSprite.bounds.extents.y, transform.position.z);
+            //print("Top edge exceeded");
+        }
+        else if (transform.position.y - playerSprite.bounds.extents.y < -screenVector.y)
+        {
+            transform.position = new Vector3(transform.position.x, -screenVector.y + playerSprite.bounds.extents.y, transform.position.z);
+            //print("Bottom edge exceeded");
+        }
     }
 
     void DashAbility()
