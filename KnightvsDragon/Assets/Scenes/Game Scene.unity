@@ -2188,7 +2188,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   winScreen: {fileID: 264265475}
   startGame: 0
-  coinsRequiredToWin: 10
+  coinsRequiredToWin: 20
   hasWonGame: 0
 --- !u!1 &1191636741
 GameObject:
